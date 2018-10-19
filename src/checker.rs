@@ -117,11 +117,7 @@ fn get_col_op(sq: &Vec<i32>, i: i32, order: i32, op: &str) -> i32 {
         start_pos += order       
     }
     accumulator
-
-
-
 }
-
 
 // 
 //  Public Functions
@@ -132,6 +128,81 @@ pub fn add_magic(sq: &mut Vec<i32>, order: i32) -> bool {
     check_op(sq, order, "add")
 }
 
-// pub fn mult_magic(sq: &mut Vec<i32>, order: i32) -> bool {
-//     check_op(sq, order, "mult")
-// }
+pub fn mult_magic(sq: &mut Vec<i32>, order: i32) -> bool {
+    check_op(sq, order, "mult")
+}
+
+
+//
+// Unit Tests
+// 
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use etl;
+
+
+    //
+    //  Tests for add magic squares
+    //
+
+    #[test]
+    fn test_correct_add_sq() {
+        let filename = "data/correct_sq.txt";
+        let mut sq = etl::read_sq(filename);
+        let valid_add_magic = add_magic(&mut sq, 5);
+        assert_eq!(valid_add_magic, true);
+    }
+
+    #[test]
+    fn test_bad_sum_sq() {
+        let filename = "data/bad_sum_sq.txt";
+        let mut sq = etl::read_sq(filename);
+        let valid_add_magic = add_magic(&mut sq, 5);
+        assert_eq!(valid_add_magic, false);
+    }
+
+    #[test]
+    fn test_malformed_sq() {
+        let filename = "data/malformed_sq.txt";
+        let mut sq = etl::read_sq(filename);
+        let valid_add_magic = add_magic(&mut sq, 5);
+        assert_eq!(valid_add_magic, false);
+    }
+
+    #[test]
+    fn test_semi_magic_sq() {
+        let filename = "data/semi_magic_sq.txt";
+        let mut sq = etl::read_sq(filename);
+        let valid_add_magic = add_magic(&mut sq, 5);
+        assert_eq!(valid_add_magic, false);        
+    }
+
+
+    //
+    //  Tests for mult magic squares
+    //
+
+    #[test]
+    fn test_correct_mult_sq() {
+        let filename = "data/mult_magic_sq.txt";
+        let mut sq = etl::read_sq(filename);
+        let valid_mult_magic = mult_magic(&mut sq, 5);
+        assert_eq!(valid_mult_magic, true);
+    }
+
+
+    #[test]
+    fn test_mult_semi_magic_sq() {
+        let filename = "data/mult_semi_magic_sq.txt";
+        let mut sq = etl::read_sq(filename);
+        let valid_mult_magic = mult_magic(&mut sq, 5);
+        assert_eq!(valid_mult_magic, false);
+    }
+
+}
+
+
+
+
