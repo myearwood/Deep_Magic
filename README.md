@@ -17,8 +17,12 @@ The searching code will be written in Rust. Rust was for its fast runtimes, as w
 ### Current Progress
 
 - [x] Write the README
-- [ ] Build out the checking infrasturcture
+- [x] Build out the checking infrasturcture
 - [ ] Detail the approach to Enigma #6
+- [ ] Build out non boolean checking infrastructure
 - [ ] Build out the approach to Enigma #6
 - [ ] .....
 - [ ] profit
+
+
+
