@@ -23,6 +23,8 @@ fn check_op(sq: &mut Vec<i32>, order: i32, op: &str) -> bool {
         results.push(col_result);
     }
 
+    println!("Results before diagonals: {:?}", results);
+
     let (c1_acc, c2_acc) = get_daigonals_op(sq, order, op);
     results.push(c1_acc);
     results.push(c2_acc);
@@ -47,8 +49,18 @@ fn get_daigonals_op(sq: &Vec<i32>, order: i32, op: &str) -> (i32, i32) {
     let mut corner1: usize = 0;
     let mut corner2: usize = (order -1) as usize;
 
-    let mut c1_accumulator: i32 = 0;
-    let mut c2_accumulator: i32 = 0;
+    let mut c1_accumulator: i32 =  match op {
+        "add" => 0,
+        "mult" => 1,
+        _ => panic!("op not found!"),
+    };
+
+
+    let mut c2_accumulator: i32 =  match op {
+        "add" => 0,
+        "mult" => 1,
+        _ => panic!("op not found!"),
+    };
 
     // get sum for corner 1 (northwest corner)
     // next square = order + 1 from current
@@ -85,7 +97,12 @@ fn get_row_op(sq: &Vec<i32>, i: i32, order: i32, op: &str) -> i32 {
     // Increment by 1
 
 
-    let mut accumulator: i32 = 0;
+    let mut accumulator: i32 = match op {
+        "add" => 0,
+        "mult" => 1,
+        _ => panic!("op not found!"),
+    };
+
     let start_pos: usize = (i * order) as usize;
     let end_pos: usize = start_pos + (order as usize);
 
@@ -105,7 +122,12 @@ fn get_col_op(sq: &Vec<i32>, i: i32, order: i32, op: &str) -> i32 {
     // Starting positon is i
     // Increment by order
 
-    let mut accumulator: i32 = 0;
+    let mut accumulator: i32 =  match op {
+        "add" => 0,
+        "mult" => 1,
+        _ => panic!("op not found!"),
+    };
+
     let mut start_pos: i32 = i;
     for _ in 0..order {
         match op {
