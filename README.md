@@ -16,11 +16,18 @@ The searching code will be written in Rust. Rust was for its fast runtimes, as w
 
 ### Current Progress
 
-- [x] Write the README
+#### Overall Work 
+
+- [x] Write the initial docs
+
+#### Enigma 6 
+
+- <a href="https://github.com/myearwood/Deep_Magic/blob/master/enigma_6.md" target="_blank">Our Approach to the problem</a>
+
 - [x] Build out the checking infrasturcture
-- [ ] Detail the approach to Enigma #6
-- [ ] Build out non boolean checking infrastructure
-- [ ] Build out the approach to Enigma #6
+- [x] Document the approach to Enigma #6
+- [ ] Implement the square generator
+
 - [ ] .....
 - [ ] profit
 
