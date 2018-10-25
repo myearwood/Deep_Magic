@@ -9,7 +9,7 @@ use std::collections::HashMap;
 // 
 // No malformed checks
 
-fn add_to_map(results: &mut HashMap<i32, i32>, acc: i32) {
+fn add_to_map(results: &mut HashMap<i64, i32>, acc: i64) {
     if !results.contains_key(&acc) {
         results.insert(
             acc,
@@ -24,7 +24,7 @@ fn add_to_map(results: &mut HashMap<i32, i32>, acc: i32) {
     }
 }
 
-fn highest_common_sum(results: HashMap<i32, i32>) -> i32 {
+fn highest_common_sum(results: HashMap<i64, i32>) -> i32 {
     let mut max_fequency: i32 = 0;
 
     for (_sum, freq) in results.iter() {

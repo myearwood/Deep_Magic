@@ -14,7 +14,7 @@ fn check_op(sq: &mut Vec<i32>, order: i32, op: &str) -> bool {
         return false;
     }
 
-    let mut results: Vec<i32> = Vec::new();
+    let mut results: Vec<i64> = Vec::new();
 
     for i in 0..order {
         let row_result = acc::get_row_op(sq, i, order, op);

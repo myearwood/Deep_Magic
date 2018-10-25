@@ -3,18 +3,18 @@
 // used to do the grunt work for the checker and sampling code
 //
 
-pub fn get_daigonals_op(sq: &Vec<i32>, order: i32, op: &str) -> (i32, i32) {
+pub fn get_daigonals_op(sq: &Vec<i32>, order: i32, op: &str) -> (i64, i64) {
     let mut corner1: usize = 0;
     let mut corner2: usize = (order -1) as usize;
 
-    let mut c1_accumulator: i32 =  match op {
+    let mut c1_accumulator: i64 =  match op {
         "add" => 0,
         "mult" => 1,
         _ => panic!("op not found!"),
     };
 
 
-    let mut c2_accumulator: i32 =  match op {
+    let mut c2_accumulator: i64 =  match op {
         "add" => 0,
         "mult" => 1,
         _ => panic!("op not found!"),
@@ -25,8 +25,8 @@ pub fn get_daigonals_op(sq: &Vec<i32>, order: i32, op: &str) -> (i32, i32) {
     for _ in  0..order{
 
         match op {
-            "add" => c1_accumulator += sq[corner1],
-            "mult" => c1_accumulator = c1_accumulator * sq[corner1],
+            "add" => c1_accumulator += sq[corner1] as i64,
+            "mult" => c1_accumulator = c1_accumulator * sq[corner1] as i64,
             _ => panic!("op not found!"),
         }    
 
@@ -38,8 +38,8 @@ pub fn get_daigonals_op(sq: &Vec<i32>, order: i32, op: &str) -> (i32, i32) {
     for _ in 0..order{
 
         match op {
-            "add" => c2_accumulator += sq[corner2],
-            "mult" => c2_accumulator = c2_accumulator * sq[corner2],
+            "add" => c2_accumulator += sq[corner2] as i64,
+            "mult" => c2_accumulator = c2_accumulator * sq[corner2] as i64,
             _ => panic!("op not found!"),
         }    
 
@@ -50,12 +50,12 @@ pub fn get_daigonals_op(sq: &Vec<i32>, order: i32, op: &str) -> (i32, i32) {
 }
 
 
-pub fn get_row_op(sq: &Vec<i32>, i: i32, order: i32, op: &str) -> i32 {
+pub fn get_row_op(sq: &Vec<i32>, i: i32, order: i32, op: &str) -> i64 {
     // Starting position: is i * order
     // Increment by 1
 
 
-    let mut accumulator: i32 = match op {
+    let mut accumulator: i64 = match op {
         "add" => 0,
         "mult" => 1,
         _ => panic!("op not found!"),
@@ -66,8 +66,8 @@ pub fn get_row_op(sq: &Vec<i32>, i: i32, order: i32, op: &str) -> i32 {
 
     for x in start_pos..end_pos {
         match op {
-            "add" => accumulator += sq[x],
-            "mult" => accumulator = accumulator * sq[x],
+            "add" => accumulator += sq[x] as i64,
+            "mult" => accumulator = accumulator * sq[x] as i64,
             _ => panic!("op not found!"),
         }
     }
@@ -76,11 +76,11 @@ pub fn get_row_op(sq: &Vec<i32>, i: i32, order: i32, op: &str) -> i32 {
 }
 
 
-pub fn get_col_op(sq: &Vec<i32>, i: i32, order: i32, op: &str) -> i32 {
+pub fn get_col_op(sq: &Vec<i32>, i: i32, order: i32, op: &str) -> i64 {
     // Starting positon is i
     // Increment by order
 
-    let mut accumulator: i32 =  match op {
+    let mut accumulator: i64 =  match op {
         "add" => 0,
         "mult" => 1,
         _ => panic!("op not found!"),
@@ -89,8 +89,8 @@ pub fn get_col_op(sq: &Vec<i32>, i: i32, order: i32, op: &str) -> i32 {
     let mut start_pos: i32 = i;
     for _ in 0..order {
         match op {
-            "add" => accumulator += sq[start_pos as usize],
-            "mult" => accumulator = accumulator * sq[start_pos as usize],
+            "add" => accumulator += sq[start_pos as usize] as i64,
+            "mult" => accumulator = accumulator * sq[start_pos as usize] as i64,
             _ => panic!("op not found!"),
         }
 
