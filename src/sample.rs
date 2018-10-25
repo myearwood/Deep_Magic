@@ -61,8 +61,6 @@ fn sample_op(sq: &mut Vec<i32>, order: i32, op: &str) -> i32 {
         add_to_map(&mut results, col_result);
     }
 
-    println!("Results before diagonals: {:?}", results);
-
     let (c1_acc, c2_acc) = acc::get_daigonals_op(sq, order, op);
     add_to_map(&mut results, c1_acc);
     add_to_map(&mut results, c2_acc);

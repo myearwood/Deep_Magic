@@ -24,8 +24,6 @@ fn check_op(sq: &mut Vec<i32>, order: i32, op: &str) -> bool {
         results.push(col_result);
     }
 
-    println!("Results before diagonals: {:?}", results);
-
     let (c1_acc, c2_acc) = acc::get_daigonals_op(sq, order, op);
     results.push(c1_acc);
     results.push(c2_acc);
