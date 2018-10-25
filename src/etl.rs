@@ -9,6 +9,7 @@ fn convert_file_to_sq(contents: String) -> Vec<i32> {
         let n: i32 = n_str.parse().unwrap();
         v.push(n);
     }
+    v.dedup();
     v
 }
 

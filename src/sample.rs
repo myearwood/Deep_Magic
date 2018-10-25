@@ -41,9 +41,7 @@ fn highest_common_sum(results: HashMap<i64, i32>) -> i32 {
 // Implementation of square checking for both add and mult squares
 // 
 
-fn sample_op(sq: &mut Vec<i32>, order: i32, op: &str) -> i32 {
-    // make sure we are counting unique integers
-    sq.dedup();
+fn sample_op(sq: &Vec<i32>, order: i32, op: &str) -> i32 {
 
     // Return false is the length is wrong
     let expected_sq_length = (order * order) as usize;  
@@ -73,11 +71,11 @@ fn sample_op(sq: &mut Vec<i32>, order: i32, op: &str) -> i32 {
 // 
 
 
-pub fn add_magic(sq: &mut Vec<i32>, order: i32) -> i32 {
+pub fn add_magic(sq: &Vec<i32>, order: i32) -> i32 {
     sample_op(sq, order, "add")
 }
 
-pub fn mult_magic(sq: &mut Vec<i32>, order: i32) -> i32 {
+pub fn mult_magic(sq: &Vec<i32>, order: i32) -> i32 {
     sample_op(sq, order, "mult")
 }
 
@@ -99,24 +97,24 @@ mod tests {
     #[test]
     fn sample_correct_add_sq() {
         let filename = "data/correct_sq.txt";
-        let mut sq = etl::read_sq(filename);
-        let add_magic_sums = add_magic(&mut sq, 5);
+        let sq = etl::read_sq(filename);
+        let add_magic_sums = add_magic(&sq, 5);
         assert_eq!(add_magic_sums, 12);
     }
 
     #[test]
     fn test_semi_magic_sq() {
         let filename = "data/semi_magic_sq.txt";
-        let mut sq = etl::read_sq(filename);
-        let add_magic_sums = add_magic(&mut sq, 5);
+        let sq = etl::read_sq(filename);
+        let add_magic_sums = add_magic(&sq, 5);
         assert_eq!(add_magic_sums, 10);        
     }
 
     #[test]
     fn test_bad_sum_sq() {
         let filename = "data/bad_sum_sq.txt";
-        let mut sq = etl::read_sq(filename);
-        let add_magic_sums = add_magic(&mut sq, 5);
+        let sq = etl::read_sq(filename);
+        let add_magic_sums = add_magic(&sq, 5);
         assert_eq!(add_magic_sums, 8);
     }
 
@@ -127,8 +125,8 @@ mod tests {
     #[test]
     fn test_correct_mult_sq() {
         let filename = "data/mult_magic_sq.txt";
-        let mut sq = etl::read_sq(filename);
-        let mult_magic_sums = mult_magic(&mut sq, 5);
+        let sq = etl::read_sq(filename);
+        let mult_magic_sums = mult_magic(&sq, 5);
         assert_eq!(mult_magic_sums, 12);
     }
 
@@ -136,8 +134,8 @@ mod tests {
     #[test]
     fn test_mult_semi_magic_sq() {
         let filename = "data/mult_semi_magic_sq.txt";
-        let mut sq = etl::read_sq(filename);
-        let mult_magic_sums = mult_magic(&mut sq, 5);
+        let sq = etl::read_sq(filename);
+        let mult_magic_sums = mult_magic(&sq, 5);
         assert_eq!(mult_magic_sums, 11);
     }
 
