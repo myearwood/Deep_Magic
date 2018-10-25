@@ -60,6 +60,7 @@ pub fn gen_sq(g1: Vec<i32>, g2: Vec<i32>) -> Vec<i32> {
     v.push(g1[1] + g2[0]);
     v.push(g1[2] + g2[1]);
 
+    v.dedup();
     v
 }
 
