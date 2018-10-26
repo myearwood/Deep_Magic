@@ -6,6 +6,8 @@ mod enigma_6;
 extern crate rand;
 use std::time::Instant;
 use std::time::Duration;
+// use std::sync::{Mutex, Arc};
+use std::thread;
 
 
 fn gen_sample() {
@@ -29,17 +31,44 @@ fn check_generated() {
 }
 
 fn main() {
-    let one_min = Duration::new(60, 0);
-    let start = Instant::now();
-    let mut elapsed = start.elapsed();
-    let mut count = 0;
 
-    while elapsed < one_min {
-        gen_sample();
-        count += 1;
-        elapsed = start.elapsed();
+    let all_threads_start = Instant::now();
+
+
+    // let base: i64 = 2;
+    // let stopping_point = base.pow(32);
+    let num_threads: usize = 5;
+    // let counter = Arc::new(Mutex::new(0));
+    let mut handles = vec![];
+
+    for _ in 0..num_threads {
+        // let counter = Arc::clone(&counter);
+
+        // specifiy thread
+        let handle = thread::spawn(move || {
+            // try it without mutex first
+            // let mut num = counter.lock().unwrap();
+            let one_min = Duration::new(60, 0);
+            let start = Instant::now();
+            let mut elapsed = start.elapsed();
+            let mut count = 0;
+
+            while elapsed < one_min {
+                gen_sample();
+                count += 1;
+                elapsed = start.elapsed();
+            }
+
+            println!("My thread 1 min count: {}", count)
+            
+        });
+        handles.push(handle);
     }
 
-    println!("{} squares generated per minute.", count);
+    for handle in handles {
+        handle.join().unwrap();
+    }
 
+    let elapsed = all_threads_start.elapsed();
+    println!("Total time elapsed: {}", elapsed.as_secs());
 }
