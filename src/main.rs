@@ -3,20 +3,21 @@ mod etl;
 mod acc;
 mod sample;
 mod enigma_6;
+use std::fs;
+
 extern crate rand;
 use std::sync::{Mutex, Arc};
-use std::thread;
+use std::{thread, time};
 
 
-fn gen_sample() {
+fn gen_sample() -> (i32, i32) {
     let (g1, g2) = enigma_6::get_random_group(-10,200);
     let rand_sq = enigma_6::gen_sq(g1, g2);
 
-    let _sums_correct = sample::add_magic(&rand_sq, 5);
-    let _products_correct = sample::mult_magic(&rand_sq, 5);
-    // println!("Square: {:?}", rand_sq);
-    // println!("Sums Correct: {:?}", sums_correct);
-    // println!("Products Correct: {:?}", products_correct);   
+    let sums_correct = sample::add_magic(&rand_sq, 5);
+    let products_correct = sample::mult_magic(&rand_sq, 5);
+
+    (sums_correct, products_correct) 
 }
 
 
@@ -33,27 +34,41 @@ fn main() {
     // let stopping_point = base.pow(32);
     let num_threads: usize = 5;
     let array: [i64; 13] = [0; 13];
-    let counter = Arc::new(Mutex::new(array));
+    let array_ref = Arc::new(Mutex::new(array));
     let mut handles = vec![];
 
+    // initialize processing threads 
     for _ in 0..num_threads {
-        let counter = Arc::clone(&counter);
+        let array_ref = Arc::clone(&array_ref);
 
         // specifiy thread
         let handle = thread::spawn(move || {
             let interval = 25_000;
-            let mut count = 0;
+            let mut local_count = 0;
+            let mut local_array: [i64; 13] = [0; 13];
 
             loop {
-                gen_sample();
-                count += 1;
+                let (sums_count, mult_count) = gen_sample();
 
-                if count % interval == 0 {
+                // if its not a add magic square, put it into the 0 index box
+                if sums_count != 12 {
+                    local_array[0] += 1;
+                } else { // add it to appropriate index 
+                    local_array[mult_count as usize] += 1;
+                }
+
+                local_count += 1;
+
+                if local_count % interval == 0 {
                     // update counter using mutex
-                    let mut data_array = counter.lock().unwrap();
-                    data_array[12] += count;
-                    println!("Current Count: {}", data_array[12]);
-                    count = 0;                
+                    let mut data_array = array_ref.lock().unwrap();
+
+                    for i in 0..13 {
+                        data_array[i] += local_array[i]
+                    }
+
+                    data_array[12] += interval;
+                    local_count = 0;                
                 }
             }
 
@@ -61,6 +76,32 @@ fn main() {
         });
         handles.push(handle);
     }
+
+
+    // initialize the write to disk thread
+    let array_ref = Arc::clone(&array_ref);
+    let io_handle = thread::spawn(move || {
+        loop {
+            let one_min = time::Duration::new(60, 0);
+ 
+            thread::sleep(one_min);
+
+            // write to file
+            let mut data_string = "".to_owned();
+            let data_array = array_ref.lock().unwrap();
+
+            for i in 0..13 {
+                let next_num = format!("{}, ", data_array[i].to_string());
+                data_string.push_str(&next_num);
+            }
+
+            fs::write("results.txt", data_string).expect("Unable to write file");
+            println!("Total Records: {:?}", data_array[12]);
+
+
+        }
+    });
+    handles.push(io_handle);
 
     for handle in handles {
         handle.join().unwrap();
