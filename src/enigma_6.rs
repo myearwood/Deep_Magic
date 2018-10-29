@@ -60,8 +60,16 @@ pub fn gen_sq(g1: Vec<i32>, g2: Vec<i32>) -> Vec<i32> {
     v.push(g1[1] + g2[0]);
     v.push(g1[2] + g2[1]);
 
-    v.dedup();
-    v
+    // Check that all the integers are unique.
+    let mut sq_set = v.to_vec();
+    sq_set.sort();
+    sq_set.dedup();
+
+    if sq_set.len() == 25 {
+        v
+    } else {
+        vec![-1]
+    }
 }
 
 
@@ -92,6 +100,15 @@ mod tests {
         assert_eq!(g2.len(), 5);
     }
 
+    #[test]
+    fn test_square_generator_dedup() {
+        let g1 = vec![0, 0, 0, 0, 0];
+        let g2 = vec![0, 0, 0, 0, 1];
+
+        let gen_sq = gen_sq(g1, g2);
+        let expected_result = vec![-1];
+        assert_eq!(gen_sq, expected_result);
+    }
 
 }
 
