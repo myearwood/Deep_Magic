@@ -6,6 +6,7 @@ mod enigma_6;
 use std::fs;
 
 extern crate rand;
+extern crate permutohedron;
 use std::sync::{Mutex, Arc};
 use std::{thread, time};
 

@@ -1,6 +1,33 @@
 use DATA_ARRAY_LEN;
 use rand::{self, Rng};
 use sample;
+use permutohedron::Heap;
+
+
+fn gen_all_perms (g1: &mut Vec<i32>, g2: &mut Vec<i32>) -> Vec<(Vec<i32>, Vec<i32>)> {
+    let g1_perms = Heap::new(g1);
+    let g2_perms = Heap::new(g2);
+    let mut g1_vec: Vec<Vec<i32>> = Vec::new();
+    let mut g2_vec: Vec<Vec<i32>> =Vec::new(); 
+    let mut results: Vec<(Vec<i32>, Vec<i32>)> = Vec::new();
+
+    for g1_p in g1_perms {
+        g1_vec.push(g1_p.clone())
+    }
+
+    for g2_p in g2_perms {
+        g2_vec.push(g2_p.clone())
+    }
+
+    for g1_p in &g1_vec {
+        for g2_p in &g2_vec {
+            results.push((g1_p.to_vec(), g2_p.to_vec()));
+        }
+    }
+
+    results
+}
+
 
 pub fn get_random_group(min: i32, max: i32) -> (Vec<i32>, Vec<i32>) {
 
@@ -78,6 +105,7 @@ pub fn gen_sq(g1: Vec<i32>, g2: Vec<i32>) -> Vec<i32> {
 
 pub fn bulk_generate(count: &mut i64, results: &mut [i64; DATA_ARRAY_LEN]) {
     let (g1, g2) = get_random_group(-10,200);
+
     let rand_sq = gen_sq(g1, g2);
 
     let sums_count = sample::add_magic(&rand_sq, 5);
@@ -135,6 +163,14 @@ mod tests {
         assert_eq!(gen_sq, expected_result);
     }
 
+    #[test]
+    fn test_gen_all_perms() {
+        let mut g1 = vec![1, 2, 3, 4, 5];
+        let mut g2 = vec![6, 7, 8, 9, 10];
+
+        let all_combos = gen_all_perms(&mut g1, &mut g2);
+        assert_eq!(all_combos.len(), 14400);
+    }
 }
 
 
