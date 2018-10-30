@@ -1,4 +1,6 @@
+use DATA_ARRAY_LEN;
 use rand::{self, Rng};
+use sample;
 
 pub fn get_random_group(min: i32, max: i32) -> (Vec<i32>, Vec<i32>) {
 
@@ -70,6 +72,29 @@ pub fn gen_sq(g1: Vec<i32>, g2: Vec<i32>) -> Vec<i32> {
     } else {
         vec![-1]
     }
+}
+
+
+
+pub fn bulk_generate(count: &mut i64, results: &mut [i64; DATA_ARRAY_LEN]) {
+    let (g1, g2) = get_random_group(-10,200);
+    let rand_sq = gen_sq(g1, g2);
+
+    let sums_count = sample::add_magic(&rand_sq, 5);
+    let mult_count = sample::mult_magic(&rand_sq, 5);
+
+    // if its not a add magic square, put it into the 0 index box
+    if sums_count != 12 {
+        results[0] += 1;
+    } else { // add it to appropriate index 
+        results[mult_count as usize] += 1;
+
+        // if mult_count == 4 {
+        //     println!("12 sq: {:?}", rand_sq);
+        // }
+    }
+
+    *count += 1;
 }
 
 

@@ -12,16 +12,6 @@ use std::{thread, time};
 
 const DATA_ARRAY_LEN: usize = 14;
 
-fn gen_sample() -> (i32, i32, Vec<i32>) {
-    let (g1, g2) = enigma_6::get_random_group(-10,200);
-    let rand_sq = enigma_6::gen_sq(g1, g2);
-
-    let sums_correct = sample::add_magic(&rand_sq, 5);
-    let products_correct = sample::mult_magic(&rand_sq, 5);
-
-    (sums_correct, products_correct, rand_sq) 
-}
-
 
 #[allow(dead_code)]
 fn check_generated() {
@@ -45,25 +35,12 @@ fn main() {
 
         // specifiy thread
         let handle = thread::spawn(move || {
-            let interval = 25_000;
-            let mut local_count = 0;
+            let interval = 25_000 as i64;
+            let mut local_count = 0 as i64;
             let mut local_array: [i64; DATA_ARRAY_LEN] = [0; DATA_ARRAY_LEN];
 
             loop {
-                let (sums_count, mult_count, sq) = gen_sample();
-
-                // if its not a add magic square, put it into the 0 index box
-                if sums_count != 12 {
-                    local_array[0] += 1;
-                } else { // add it to appropriate index 
-                    local_array[mult_count as usize] += 1;
-
-                    if mult_count == 12 {
-                        println!("12 sq: {:?}", sq);
-                    }
-                }
-
-                local_count += 1;
+                enigma_6::bulk_generate(&mut local_count, &mut local_array);
 
                 if local_count % interval == 0 {
                     // update counter using mutex
