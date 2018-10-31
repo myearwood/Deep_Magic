@@ -50,7 +50,7 @@ pub fn get_random_group(min: i32, max: i32) -> (Vec<i32>, Vec<i32>) {
     (g1, g2)
 }
 
-pub fn gen_sq(g1: Vec<i32>, g2: Vec<i32>) -> Vec<i32> {
+pub fn gen_sq(g1: &Vec<i32>, g2: &Vec<i32>) -> Vec<i32> {
     let mut v: Vec<i32> = Vec::new();
 
     // Row 1
@@ -104,26 +104,24 @@ pub fn gen_sq(g1: Vec<i32>, g2: Vec<i32>) -> Vec<i32> {
 
 
 pub fn bulk_generate(count: &mut i64, results: &mut [i64; DATA_ARRAY_LEN]) {
-    let (mut g1, mut g2) = get_random_group(-10,200);
-    let group_combos = gen_all_perms(&mut g1, &mut g2);
+    let (g1, g2) = get_random_group(-10,500);
 
-    for (g1_p, g2_p) in group_combos.iter() {
-        let rand_sq = gen_sq(g1_p.to_vec(), g2_p.to_vec());
+    let rand_sq = gen_sq(&g1, &g2);
 
-        let sums_count = sample::add_magic(&rand_sq, 5);
-        let mult_count = sample::mult_magic(&rand_sq, 5);
+    let sums_count = sample::add_magic(&rand_sq, 5);
+    let mult_count = sample::mult_magic(&rand_sq, 5);
 
-        // if its not a add magic square, put it into the 0 index box
-        if sums_count != 12 {
-            results[0] += 1;
-        } else { // add it to appropriate index 
-            results[mult_count as usize] += 1;
+    // if its not a add magic square, put it into the 0 index box
+    if sums_count != 12 {
+        results[0] += 1;
+    } else { // add it to appropriate index 
+        results[mult_count as usize] += 1;
 
-            // if mult_count == 4 {
-            //     println!("12 sq: {:?}", rand_sq);
-            // }
+        if mult_count == 4 {
+            println!("4 sq: {:?}. {:?}", g1, g2);
         }
     }
+
     *count += 1;
 }
 
@@ -142,7 +140,7 @@ mod tests {
         let g1 = vec![0, 76, 30, -23, -30];
         let g2 = vec![95, 100, 78, 114, 80];
 
-        let gen_sq = gen_sq(g1, g2);
+        let gen_sq = gen_sq(&g1, &g2);
 
         let expected_result = vec![95, 176, 108, 91, 50, 144, 57, 65, 100, 154, 70, 78, 190, 110, 72, 156, 125, 77, 48, 114, 55, 84, 80, 171, 130];
         assert_eq!(gen_sq, expected_result);
@@ -160,7 +158,7 @@ mod tests {
         let g1 = vec![0, 0, 0, 0, 0];
         let g2 = vec![0, 0, 0, 0, 1];
 
-        let gen_sq = gen_sq(g1, g2);
+        let gen_sq = gen_sq(&g1, &g2);
         let expected_result = vec![-1];
         assert_eq!(gen_sq, expected_result);
     }
@@ -175,7 +173,7 @@ mod tests {
     }
 
     #[test]
-    fn expirement_with_bulk_gen() {
+    fn expirement_with_perms() {
         for _ in 0..50 {
             let mut count = 0 as i64;
             let mut array: [i64; DATA_ARRAY_LEN] = [0; DATA_ARRAY_LEN];
@@ -184,8 +182,22 @@ mod tests {
             println!("Results: {:?}", array);           
         }
 
-        assert_eq!(1, 8);
+        assert_eq!(8, 8);
 
+    }
+
+    #[test]
+    fn expirement_with_bulk_generate() {
+
+        let mut count = 0 as i64;
+        let mut array: [i64; DATA_ARRAY_LEN] = [0; DATA_ARRAY_LEN];
+
+
+        for _ in 0..10_000_000 {
+            bulk_generate(&mut count, &mut array);
+        }
+
+        assert_eq!(1, 8);
     }
 }
 

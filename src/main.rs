@@ -17,7 +17,7 @@ const DATA_ARRAY_LEN: usize = 14;
 #[allow(dead_code)]
 fn check_generated() {
     let (g1, g2) = enigma_6::get_random_group(-10,200);
-    let rand_sq = enigma_6::gen_sq(g1, g2);
+    let rand_sq = enigma_6::gen_sq(&g1, &g2);
     let _is_add_magic = checker::add_magic(&rand_sq, 5);
     let _is_mult_magic = checker::mult_magic(&rand_sq, 5);
 }
