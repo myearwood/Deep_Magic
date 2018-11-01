@@ -52,6 +52,7 @@ pub fn get_random_group(min: i32, max: i32) -> (Vec<i32>, Vec<i32>) {
 
 pub fn gen_sq(g1: &Vec<i32>, g2: &Vec<i32>) -> Vec<i32> {
     let mut v: Vec<i32> = Vec::new();
+    let zero: i32 = 0;
 
     // Row 1
     v.push(g1[0] + g2[0]);
@@ -94,6 +95,10 @@ pub fn gen_sq(g1: &Vec<i32>, g2: &Vec<i32>) -> Vec<i32> {
     sq_set.sort();
     sq_set.dedup();
 
+    if sq_set.contains(&zero) {
+        return vec![-1]
+    }
+
     if sq_set.len() == 25 {
         v
     } else {
@@ -118,7 +123,7 @@ pub fn bulk_generate(count: &mut i64, results: &mut [i64; DATA_ARRAY_LEN]) {
         results[mult_count as usize] += 1;
 
         if mult_count == 4 {
-            println!("4 sq: {:?}. {:?}", g1, g2);
+            println!("4 sq: {:?}", rand_sq);
         }
     }
 
@@ -183,6 +188,7 @@ mod tests {
         for (g1_p, g2_p) in &all_perms {
             let rand_sq = gen_sq(&g1_p, &g2_p);
 
+
             let sums_count = sample::add_magic(&rand_sq, 5);
             let mult_count = sample::mult_magic(&rand_sq, 5);
 
@@ -191,6 +197,7 @@ mod tests {
                 results[0] += 1;
             } else { // add it to appropriate index 
                 results[mult_count as usize] += 1;
+
             }
         }
 

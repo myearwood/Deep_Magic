@@ -30,4 +30,4 @@ This is a collection of all the findings and hueristics developed for the 10 inp
 - We searching randomly over 10 millino records, we cannot find any improvement using permutations. we only find invalid squares and one sums.
 
 - We do find variations in squares that have 4 sums. i.e if we know a certain 2 groups of 5 can give give us a square with 4 product sums, we know that we can find some other (usually lesser squares), by permutuing the order of the integers. 
-
+(2, 3, 4)   (loll this cause is when there's a zero in it (duhhh!!!))
