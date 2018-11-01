@@ -27,3 +27,7 @@ This is a collection of all the findings and hueristics developed for the 10 inp
 
 - This GL square always produces an add magic square if it can create 25 distict integers. We only need to be concered about the number of identical products after that occurs.
 
+- We searching randomly over 10 millino records, we cannot find any improvement using permutations. we only find invalid squares and one sums.
+
+- We do find variations in squares that have 4 sums. i.e if we know a certain 2 groups of 5 can give give us a square with 4 product sums, we know that we can find some other (usually lesser squares), by permutuing the order of the integers. 
+

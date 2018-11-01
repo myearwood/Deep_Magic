@@ -174,31 +174,43 @@ mod tests {
 
     #[test]
     fn expirement_with_perms() {
-        for _ in 0..50 {
-            let mut count = 0 as i64;
-            let mut array: [i64; DATA_ARRAY_LEN] = [0; DATA_ARRAY_LEN];
-            bulk_generate(&mut count, &mut array);
+        let mut results: [i64; DATA_ARRAY_LEN] = [0; DATA_ARRAY_LEN];
+        let mut g1 = vec![480, 1, 325, 417, 105];
+        let mut g2 = vec![238, 71, 453, -1, 58];
 
-            println!("Results: {:?}", array);           
+        let all_perms = gen_all_perms(&mut g1, &mut g2);
+
+        for (g1_p, g2_p) in &all_perms {
+            let rand_sq = gen_sq(&g1_p, &g2_p);
+
+            let sums_count = sample::add_magic(&rand_sq, 5);
+            let mult_count = sample::mult_magic(&rand_sq, 5);
+
+            // if its not a add magic square, put it into the 0 index box
+            if sums_count != 12 {
+                results[0] += 1;
+            } else { // add it to appropriate index 
+                results[mult_count as usize] += 1;
+            }
         }
 
-        assert_eq!(8, 8);
-
-    }
-
-    #[test]
-    fn expirement_with_bulk_generate() {
-
-        let mut count = 0 as i64;
-        let mut array: [i64; DATA_ARRAY_LEN] = [0; DATA_ARRAY_LEN];
-
-
-        for _ in 0..10_000_000 {
-            bulk_generate(&mut count, &mut array);
-        }
-
+        println!("Results: {:?}", results);
         assert_eq!(1, 8);
     }
+
+    // #[test]
+    // fn expirement_with_bulk_generate() {
+
+    //     let mut count = 0 as i64;
+    //     let mut array: [i64; DATA_ARRAY_LEN] = [0; DATA_ARRAY_LEN];
+
+
+    //     for _ in 0..10_000_000 {
+    //         bulk_generate(&mut count, &mut array);
+    //     }
+
+    //     assert_eq!(1, 1);
+    // }
 }
 
 
