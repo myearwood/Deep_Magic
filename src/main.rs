@@ -74,8 +74,8 @@ fn main() {
             let mut data_string = "".to_owned();
             let data_array = array_ref.lock().unwrap();
 
-            for i in 0..DATA_ARRAY_LEN {
-                let next_num = format!("{}, ", data_array[i].to_string());
+            for i in 1..DATA_ARRAY_LEN-1 {
+                let next_num = format!("{} magic product: {}\n ", i, data_array[i].to_string());
                 data_string.push_str(&next_num);
             }
 
