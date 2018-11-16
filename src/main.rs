@@ -79,8 +79,11 @@ fn main() {
                 data_string.push_str(&next_num);
             }
 
+            let total_records = format!("{} total_records.", DATA_ARRAY_LEN-1);
+            data_string.push_str(&total_records);
+
             fs::write("results.txt", data_string).expect("Unable to write file");
-            println!("Total Records: {:?}", data_array[13]);
+            println!("Total Records: {:?}", data_array[DATA_ARRAY_LEN-1]);
 
 
         }
