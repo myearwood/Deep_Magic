@@ -26,7 +26,13 @@ fn main() {
     // let base: i64 = 2;
     // let stopping_point = base.pow(32);
     let num_threads: usize = 5;
-    let array: [i64; DATA_ARRAY_LEN] = [0; DATA_ARRAY_LEN];
+    let mut array: Vec<(i64, Vec<i32>)> = Vec::new();
+
+    for _ in 0..DATA_ARRAY_LEN {
+        array.push((0,Vec::new()));
+    }
+
+
     let array_ref = Arc::new(Mutex::new(array));
     let mut handles = vec![];
 
@@ -48,10 +54,10 @@ fn main() {
                     let mut data_array = array_ref.lock().unwrap();
 
                     for i in 0..DATA_ARRAY_LEN {
-                        data_array[i] += local_array[i]
+                        data_array[i].0 += local_array[i]
                     }
 
-                    data_array[13] += interval;
+                    data_array[13].0 += interval;
                     local_count = 0;                
                 }
             }
@@ -75,7 +81,7 @@ fn main() {
             let data_array = array_ref.lock().unwrap();
 
             for i in 1..DATA_ARRAY_LEN-1 {
-                let next_num = format!("{} magic product: {}\n ", i, data_array[i].to_string());
+                let next_num = format!("{} magic product: {}\n ", i, data_array[i].0.to_string());
                 data_string.push_str(&next_num);
             }
 
