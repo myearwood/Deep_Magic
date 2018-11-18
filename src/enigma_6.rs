@@ -108,7 +108,7 @@ pub fn gen_sq(g1: &Vec<i32>, g2: &Vec<i32>) -> Vec<i32> {
 
 
 
-pub fn bulk_generate(count: &mut i64, results: &mut [i64; DATA_ARRAY_LEN]) {
+pub fn bulk_generate(count: &mut i64, results: &mut Vec<(i64, Vec<i32>)>) {
     let (g1, g2) = get_random_group(-10,500);
 
     let rand_sq = gen_sq(&g1, &g2);
@@ -118,9 +118,9 @@ pub fn bulk_generate(count: &mut i64, results: &mut [i64; DATA_ARRAY_LEN]) {
 
     // if its not a add magic square, put it into the 0 index box
     if sums_count != 12 {
-        results[0] += 1;
+        results[0].0 += 1;
     } else { // add it to appropriate index 
-        results[mult_count as usize] += 1;
+        results[mult_count as usize].0 += 1;
 
         if mult_count == 4 {
             println!("4 sq: {:?}", rand_sq);

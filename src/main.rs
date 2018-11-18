@@ -26,8 +26,10 @@ fn main() {
     // let base: i64 = 2;
     // let stopping_point = base.pow(32);
     let num_threads: usize = 5;
-    let mut array: Vec<(i64, Vec<i32>)> = Vec::new();
 
+
+    // initialize the global array
+    let mut array: Vec<(i64, Vec<i32>)> = Vec::new();
     for _ in 0..DATA_ARRAY_LEN {
         array.push((0,Vec::new()));
     }
@@ -44,7 +46,12 @@ fn main() {
         let handle = thread::spawn(move || {
             let interval = 25_000 as i64;
             let mut local_count = 0 as i64;
-            let mut local_array: [i64; DATA_ARRAY_LEN] = [0; DATA_ARRAY_LEN];
+
+            // initialize the local array
+            let mut local_array: Vec<(i64, Vec<i32>)> = Vec::new();
+            for _ in 0..DATA_ARRAY_LEN {
+                local_array.push((0,Vec::new()));
+            }
 
             loop {
                 enigma_6::bulk_generate(&mut local_count, &mut local_array);
@@ -54,7 +61,7 @@ fn main() {
                     let mut data_array = array_ref.lock().unwrap();
 
                     for i in 0..DATA_ARRAY_LEN {
-                        data_array[i].0 += local_array[i]
+                        data_array[i].0 += local_array[i].0
                     }
 
                     data_array[13].0 += interval;
