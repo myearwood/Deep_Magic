@@ -3,6 +3,7 @@ mod etl;
 mod acc;
 mod sample;
 mod enigma_6;
+mod enigma_66;
 use std::fs;
 
 extern crate rand;
